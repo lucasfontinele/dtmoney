@@ -8,6 +8,7 @@ export const GlobalStyle = createGlobalStyle`
     --red: #e52e4d;
     --blue: #5429CC;
     --blue-light: #6933ff;
+    --green: #33CC95;
 
     --text-title: #363f5f;
     --text-body: #969cb3;
@@ -33,6 +34,8 @@ export const GlobalStyle = createGlobalStyle`
   body {
     background: var(---background);
     -webkit-font-smoothing: antialiased;
+
+    height: 100vh;
   }
 
   body, input, text-area, button {
