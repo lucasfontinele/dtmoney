@@ -26,23 +26,22 @@ export const Container = styled.form`
   }
 `;
 
-export const Input = styled.input`
-  background: #E7E9EE;
-  border: 1px solid #D7D7D7;
-  box-sizing: border-box;
-  border-radius: 5px;
-  padding: 1.25rem 1.5rem;
-
-  &::placeholder {
-    font-size: 1rem;
-    color: var(--text-body);
-  }
-`;
-
 export const TransactionTypeContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
+
+  .active {
+    transition: background 0.2s;
+  }
+
+  .deposit {
+    background: rgba(18, 164, 84, 0.1);
+  }
+
+  .withdraw {
+    background: rgba(229, 46, 77, 0.1);
+  }
 
   button {
     height: 4rem;

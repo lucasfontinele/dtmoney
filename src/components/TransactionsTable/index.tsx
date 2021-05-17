@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
+
+import { format } from 'date-fns';
+
 import { api } from "../../services/api";
 import { Container } from "./styles";
+
+type TransactionRequestAPI = {
+  transactions: Transaction[];
+};
 
 type Transaction = {
   id: number;
   title: string;
   amount: number;
-  type: 'deposit' | 'outcome',
+  type: 'deposit' | 'withdraw',
   category: string;
   createdAt: Date;
 };
@@ -15,9 +22,19 @@ export function TransactionsTable() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
-    api.get('/transactions')
-      .then(({ data }) => setTransactions(data));
+    api.get<TransactionRequestAPI>('/transactions')
+      .then(({ data }) => setTransactions(data.transactions));
   }, []);
+
+  const formatDate = (date: string | Date): string | Date => {
+    try {
+      const formattedDate = format(new Date(date), 'dd/MM/yyyy');
+
+      return formattedDate;
+    } catch (error) {
+      return date;
+    }
+  };
 
   return (
     <Container>
@@ -45,10 +62,15 @@ export function TransactionsTable() {
           <tbody>
             {transactions.map((transaction) => (
               <tr key={transaction.id}>
-                <td>Desenvolvimento de website</td>
-                <td className="deposit">R$ 12.000,00</td>
-                <td>Desenvolvimento</td>
-                <td>10/05/2021</td>
+                <td>{transaction.title}</td>
+                <td className={transaction.type}>
+                  {transaction.type === 'withdraw' ? '-' : ''} {new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                  }).format(transaction.amount)}
+                </td>
+                <td>{transaction.category}</td>
+                <td>{formatDate(transaction.createdAt)}</td>
               </tr>
             ))}
           </tbody>
