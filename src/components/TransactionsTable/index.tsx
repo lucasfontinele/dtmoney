@@ -1,30 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext } from 'react';
 
 import { format } from 'date-fns';
 
-import { api } from "../../services/api";
-import { Container } from "./styles";
+import { Container } from './styles';
 
-type TransactionRequestAPI = {
-  transactions: Transaction[];
-};
-
-type Transaction = {
-  id: number;
-  title: string;
-  amount: number;
-  type: 'deposit' | 'withdraw',
-  category: string;
-  createdAt: Date;
-};
+import { TransactionsContext } from '../../contexts/TransactionContext';
 
 export function TransactionsTable() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-
-  useEffect(() => {
-    api.get<TransactionRequestAPI>('/transactions')
-      .then(({ data }) => setTransactions(data.transactions));
-  }, []);
+  const transactions = useContext(TransactionsContext);
 
   const formatDate = (date: string | Date): string | Date => {
     try {
