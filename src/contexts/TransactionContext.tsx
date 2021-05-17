@@ -6,6 +6,10 @@ type TransactionRequestAPI = {
   transactions: Transaction[];
 };
 
+type TransactionCreateAPI = {
+  transaction: Transaction;
+};
+
 type Transaction = {
   id: number;
   title: string;
@@ -41,12 +45,12 @@ export function TransactionsProvider({ children }: TransactionProviderProps) {
   }, []);
 
   async function createTransaction(transactionInput: TransactionInput) {
-    const { data } = await api.post<Transaction>('/transactions', {
+    const { data } = await api.post<TransactionCreateAPI>('/transactions', {
       ...transactionInput,
       createdAt: new Date(),
     });
 
-    const transaction = data;
+    const transaction = data.transaction;
 
     setTransactions([
       ...transactions,

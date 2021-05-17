@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { Container } from './styles';
 
 import { TransactionsContext } from '../../contexts/TransactionContext';
+import { handleFormatCurrency } from '../../helpers/formats';
 
 export function TransactionsTable() {
   const { transactions } = useContext(TransactionsContext);
@@ -47,10 +48,7 @@ export function TransactionsTable() {
               <tr key={transaction.id}>
                 <td>{transaction.title}</td>
                 <td className={transaction.type}>
-                  {transaction.type === 'withdraw' ? '-' : ''} {new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL',
-                  }).format(transaction.amount)}
+                  {transaction.type === 'withdraw' ? '-' : ''} {handleFormatCurrency(transaction.amount)}
                 </td>
                 <td>{transaction.category}</td>
                 <td>{formatDate(transaction.createdAt)}</td>
