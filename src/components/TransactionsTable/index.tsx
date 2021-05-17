@@ -1,14 +1,12 @@
-import { useContext } from 'react';
-
 import { format } from 'date-fns';
 
 import { Container } from './styles';
 
-import { TransactionsContext } from '../../contexts/TransactionContext';
+import { useTransaction } from '../../hooks/useTransactions';
 import { handleFormatCurrency } from '../../helpers/formats';
 
 export function TransactionsTable() {
-  const { transactions } = useContext(TransactionsContext);
+  const { transactions } = useTransaction();
 
   const formatDate = (date: string | Date): string | Date => {
     try {
