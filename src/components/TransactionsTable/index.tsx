@@ -7,7 +7,7 @@ import { Container } from './styles';
 import { TransactionsContext } from '../../contexts/TransactionContext';
 
 export function TransactionsTable() {
-  const transactions = useContext(TransactionsContext);
+  const { transactions } = useContext(TransactionsContext);
 
   const formatDate = (date: string | Date): string | Date => {
     try {

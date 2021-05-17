@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Modal from 'react-modal';
+
+import { Container, TransactionTypeContainer } from './styles';
+import { Input } from '../Input';
+
+import { TransactionsContext } from '../../contexts/TransactionContext';
 
 import closeImg from '../../assets/close.svg';
 import incomeImg from '../../assets/income.svg';
 import outcomeImg from '../../assets/outcome.svg';
-
-import { Container, TransactionTypeContainer } from './styles';
-import { Input } from '../Input';
-import { api } from '../../services/api';
 
 type NewTransactionModalProps = {
   isOpen: boolean;
@@ -15,12 +16,21 @@ type NewTransactionModalProps = {
 }
 
 export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionModalProps) {
+  const { createTransaction } = useContext(TransactionsContext);
+
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState('');
   const [type, setType] = useState('deposit');
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleResetFields = () => {
+    setTitle('');
+    setAmount(0);
+    setCategory('');
+    setType('deposit');
+  };
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const data = {
@@ -30,7 +40,10 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
       type,
     };
 
-    api.post('/transactions', data);
+    await createTransaction(data);
+
+    handleResetFields();
+    onRequestClose();
   }
 
   return (
